@@ -1,8 +1,9 @@
 <div class="root" style="text-align:center">
   <h1>{{ title }}</h1>
   <div class="blocks">
-    <div class="block" *ngFor="let block of blocks" [appShowTurn]="turn"></div>
+    <div class="block" *ngFor="let block of blocks; let i=index" [appShowTurn]="(block.voter) ? 'voted' : turn" (click)="vote(i)">{{ block.voter }}</div>
   </div>
+  <div class="turn">目前玩家：{{ turn }}</div>
 </div>
 
 <router-outlet></router-outlet>
