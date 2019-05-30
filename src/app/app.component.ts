@@ -10,20 +10,45 @@ import { BLOCKS } from './mock-blocks';
 export class AppComponent {
   title = 'tic-tac-toe';
 
-  blocks = BLOCKS;
+  blocks: Block[] = [];
+  turn: string;
+  gameStatus: string;
+  round: number;
 
-  turn = 'o';
-  round = 0;
-
-  vote(i) {
-    if (!this.blocks[i].voter) {
-      this.blocks[i].voter = this.turn;
-      this.round += 1;
-      this.checkWiner(i);
-    }
+  constructor() {
+    this.gameReset(undefined, undefined);
   }
 
-  checkWiner(i) {
+  vote(i, oTimer, xTimer) {
+    if (this.gameStatus !== 'battle' || this.blocks[i].voter) {
+      return;
+    }
+    this.blocks[i].voter = this.turn;
+    this.round += 1;
+    this.checkWiner(i, oTimer, xTimer);
+  }
+
+  gameStart(oTimer) {
+    this.gameStatus = 'battle';
+    oTimer.start();
+  }
+
+  gameStop() {
+    this.gameStatus = 'stop';
+    console.log('gameReset', this.blocks, 'status', this.gameStatus);
+  }
+
+  gameReset(oTimer, xTimer) {
+    this.gameStatus = 'reset';
+    this.blocks = JSON.parse(JSON.stringify(BLOCKS));
+    this.turn = 'o';
+    this.round = 0;
+    if (oTimer) { oTimer.stop(); oTimer.reset(); }
+    if (xTimer) { xTimer.stop(); xTimer.reset(); }
+    console.log('gameReset', this.blocks, 'status', this.gameStatus);
+  }
+
+  checkWiner(i, oTimer, xTimer) {
     let vColumn: number = i%3;
     let vRow: number = Math.floor(i/3);
 
@@ -34,11 +59,30 @@ export class AppComponent {
          || (this.blocks[column[0]].voter === this.blocks[column[1]].voter && this.blocks[column[1]].voter === this.blocks[column[2]].voter)
          || ((vRow === vColumn) && (this.blocks[0].voter === this.blocks[4].voter && this.blocks[4].voter === this.blocks[8].voter))
          || (((vRow + vColumn) === 2) && (this.blocks[2].voter === this.blocks[4].voter && this.blocks[4].voter === this.blocks[6].voter))) {
+      this.gameStop();
+      oTimer.stop();
+      xTimer.stop();
       setTimeout(() => alert('贏家是 ' + this.blocks[i].voter), 0);
     } else if (this.round === 9) {
+      this.gameStop();
+      oTimer.stop();
+      xTimer.stop();
       setTimeout(() => alert('平手'), 0);
     } else {
-      this.turn = (this.turn === 'o') ? 'x' : 'o';
+      if (this.turn === 'o') {
+        this.turn = 'x';
+        oTimer.stop();
+        xTimer.start();
+      } else {
+        this.turn = 'o';
+        oTimer.start();
+        xTimer.stop();
+      }
     }
+  }
+
+  winer(i) {
+    this.gameStop();
+    setTimeout(() => alert('贏家是 ' + i), 0);
   }
 }

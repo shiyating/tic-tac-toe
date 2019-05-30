@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShowTurnDirective } from './show-turn.directive';
+import { CountdownTimerComponent } from './countdown-timer/countdown-timer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ShowTurnDirective
+    ShowTurnDirective,
+    CountdownTimerComponent
   ],
   imports: [
     BrowserModule,

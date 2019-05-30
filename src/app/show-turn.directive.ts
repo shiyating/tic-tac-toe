@@ -11,14 +11,14 @@ export class ShowTurnDirective {
     @Input('appShowTurn') turn: string;
 
     @HostListener('mouseenter') onMouseEnter() {
-      if (this.turn !== 'voted') {
+      if (this.turn !== 'invalid') {
         this.el.nativeElement.innerText = this.turn;
         this.el.nativeElement.style.cursor = 'pointer';
       }
     }
 
     @HostListener('mouseleave') onMouseLeave() {
-      if (this.turn !== 'voted') {
+      if (this.turn !== 'invalid') {
         this.el.nativeElement.innerText = '';
       }
       this.el.nativeElement.style.cursor = 'default';

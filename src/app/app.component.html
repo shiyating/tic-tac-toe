@@ -1,9 +1,15 @@
 <div class="root" style="text-align:center">
   <h1>{{ title }}</h1>
+  <div class="buttons">
+    <button class="button button-start" (click)="gameStart(o)" [disabled]="gameStatus !== 'reset'">開始</button>
+    <button class="button button-reset" (click)="gameReset(o, x)" [disabled]="gameStatus === 'reset'">重置</button>
+  </div>
   <div class="blocks">
-    <div class="block" *ngFor="let block of blocks; let i=index" [appShowTurn]="(block.voter) ? 'voted' : turn" (click)="vote(i)">{{ block.voter }}</div>
+    <div class="block" *ngFor="let block of blocks; let i=index" [appShowTurn]="(block.voter || gameStatus !== 'battle') ? 'invalid' : turn" (click)="vote(i, o, x);">{{ block.voter }}</div>
   </div>
   <div class="turn">目前玩家：{{ turn }}</div>
+  <div>o : <app-countdown-timer (timeout)="winer('x', o, x)" #o></app-countdown-timer></div>
+  <div>x : <app-countdown-timer (timeout)="winer('o', o, x)" #x></app-countdown-timer></div>
 </div>
 
 <router-outlet></router-outlet>
