@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Block } from './block';
 import { BLOCKS } from './mock-blocks';
 
@@ -8,7 +8,7 @@ import { BLOCKS } from './mock-blocks';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'tic-tac-toe';
 
   blocks: Block[] = [];
