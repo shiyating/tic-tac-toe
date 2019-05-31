@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Block } from './block';
 import { BLOCKS } from './mock-blocks';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'tic-tac-toe';
@@ -15,7 +16,13 @@ export class AppComponent {
   gameStatus: string;
   round: number;
 
-  constructor() {
+  ngOnInit() {
+    setInterval(() => {
+      this.changeDetectorRef.markForCheck();
+    }, 100)
+  }
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {
     this.gameReset(undefined, undefined);
   }
 
